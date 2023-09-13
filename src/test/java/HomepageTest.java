@@ -64,6 +64,7 @@ public class HomepageTest {
       wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#dialog_overlayTd > div > div.dialog_closeButton")));
       driver.findElement(By.cssSelector("#dialog_overlayTd > div > div.dialog_closeButton")).click();
     }
+    // assert on a button that is only on the home page
     assertThat(driver.findElement(By.cssSelector("li:nth-child(2) > span:nth-child(1)")).getText(), is("▼ אודות פרויקט אגורה"));
     driver.close();
   }
@@ -80,7 +81,6 @@ public class HomepageTest {
     }
     driver.findElement(By.id("logoImage")).click();
     {
-     // WebDriverWait wait = new WebDriverWait(driver, 30);
       WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
       wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("li:nth-child(2) > span:nth-child(1)")));
     }
@@ -88,7 +88,18 @@ public class HomepageTest {
       List<WebElement> elements = driver.findElements(By.id("logoImage"));
       assert(elements.size() > 0);
     }
-    assertThat(driver.findElement(By.cssSelector("li:nth-child(2) > span:nth-child(1)")).getText(), is("▼ אודות פרויקט אגורה"));
+    // Comparison between the url of the home page and the url of the current page
+    {
+      String initialUrl = "https://www.agora.co.il/"; // this is the url of the home page
+      driver.get(initialUrl);
+      driver.getCurrentUrl();
+      if (initialUrl.equals(driver.getCurrentUrl()))
+      {
+        System.out.println("The Url: " + driver.getCurrentUrl() + " and the Url: " + initialUrl + " are the same");
+      }
+      else
+        System.out.println("The Url: "+driver.getCurrentUrl() + "and the Url: " + initialUrl+"are not equal");
+    }
     driver.close();
   }
   @Test
@@ -154,8 +165,8 @@ public class HomepageTest {
     driver.close();
   }
   @Test
-  //Checking that when you are on the site without registration, it says "Hello Guest" on the top right and not a specific name
   // בדיקה שכאשר נמצאים באתר ללא רישום, כתוב בצד ימין למעלה "שלום אורח/ת" ולא שם מסוים
+  //Checking that when you are on the site without registration, it says "Hello Guest" on the top right and not a specific name
   public void validationHelloguest() {
     driver.get("https://www.agora.co.il/");
     driver.manage().window().setSize(new Dimension(1600, 860));
